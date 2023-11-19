@@ -13,6 +13,15 @@ fn utf8_bytes(character: char) -> String {
     utf8_bytes_hex.trim_end().to_string()
 }
 
+fn byte_to_binary_with_space(character: char) -> String {
+    let mut utf8_bytes_binary = String::new();
+    for byte in character.to_string().as_bytes() {
+        let bin_byte = format!("{:04b} {:04b}", byte >> 4, byte & 0x0F);
+        utf8_bytes_binary.push_str(&*bin_byte);
+    }
+    utf8_bytes_binary.trim_end().to_string()
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -24,10 +33,10 @@ fn main() {
         input.trim().to_string() // Trim and convert to a String
     };
 
-    
     for character in text.chars() {
         let unicode_value = ucode(character);
         let utf8_bytes_hex = utf8_bytes(character);
-        println!("{} | {} | {}", character, unicode_value, utf8_bytes_hex);
+        let binary_val = byte_to_binary_with_space(character);
+        println!("{:<1} | {:<6} | {:<12} | {}", character, unicode_value, utf8_bytes_hex, binary_val);
     }    
 }
